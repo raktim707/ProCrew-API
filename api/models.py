@@ -59,8 +59,8 @@ class Categories(models.Model):
 
 
 class CrewEmployees(models.Model):
-    crew = models.ForeignKey('Crews', models.DO_NOTHING)
-    user = models.ForeignKey('Users', models.DO_NOTHING)
+    crew = models.ForeignKey('Crews', related_name='crews', on_delete=models.DO_NOTHING)
+    user = models.ForeignKey('Users', related_name='crewemployees', on_delete= models.DO_NOTHING)
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
     deleted_at = models.DateTimeField(blank=True, null=True)
@@ -512,18 +512,7 @@ class Tags(models.Model):
         db_table = 'tags'
 
 
-class TaskEmployees(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    employee_id = models.PositiveIntegerField()
-    task_id = models.PositiveIntegerField()
-    role = models.CharField(max_length=11)
-    crew_id = models.PositiveIntegerField(blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
 
-    class Meta:
-        managed = False
-        db_table = 'task_employees'
 
 
 class Tasks(models.Model):
@@ -533,7 +522,7 @@ class Tasks(models.Model):
     status = models.CharField(max_length=11)
     complete_start = models.DateTimeField(blank=True, null=True)
     complete_end = models.DateTimeField(blank=True, null=True)
-    crew = models.ForeignKey(Crews, models.DO_NOTHING, blank=True, null=True)
+    crew = models.ForeignKey(Crews, related_name='tasks', on_delete=models.DO_NOTHING, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
@@ -544,6 +533,18 @@ class Tasks(models.Model):
     class Meta:
         managed = False
         db_table = 'tasks'
+
+class TaskEmployees(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    employee_id = models.PositiveIntegerField()
+    task = models.ForeignKey(Tasks, related_name='taskemployees', on_delete=models.DO_NOTHING)
+    role = models.CharField(max_length=11)
+    crew_id = models.PositiveIntegerField(blank=True, null=True)
+    created_at = models.DateTimeField(blank=True, null=True)
+    updated_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'task_employees'
 
 
 class TimeOff(models.Model):

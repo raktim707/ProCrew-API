@@ -5,21 +5,17 @@ from drf_yasg import openapi
 from .import views
 
 router = routers.DefaultRouter()
-router.register('inventory', views.InventoryViewSet)
-
-schema_view = get_schema_view(
-   openapi.Info(
-      title="Snippets API",
-      default_version='v1',
-      description="Test description",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
-      license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=[permissions.AllowAny],
-)
-
+router.register('Inventory', views.InventoryViewSet)
+router.register('Timetracker', views.TimeTrackerViewSet)
+router.register('Task', views.TaskViewSet)
+router.register('Crews', views.CrewsViewSet)
+router.register('Picklist', views.PicklistViewSet)
+router.register('Schedule', views.ScheduleViewSet)
+router.register('Subscribers', views.SubscriberViewSet)
+router.register('Employee', views.UserViewSet)
+router.register('Attachments', views.AttachmentViewSet)
+router.register('TimeOff', views.TimeOffViewSet)
+router.register('TaskEmployees', views.TaskEmployeesViewSet)
 urlpatterns = [
 	path('', include(router.urls)),
 ]
